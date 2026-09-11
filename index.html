@@ -501,7 +501,7 @@
         <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
           
           <!-- Alternador: Modo Estímulo Zero (Limpar Tela) -->
-          <button id="btnToggleFog" class="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl sm:rounded-lg bg-[var(--surface-soft)]/60 border border-[var(--border)]/80 text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--sage-border)] gentle-transition flex items-center gap-1.5" title="Ativa o Estímulo Zero (Limpar a tela)">
+          <button id="btnToggleFog" class="hidden sm:flex p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl sm:rounded-lg bg-[var(--surface-soft)]/60 border border-[var(--border)]/80 text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--sage-border)] gentle-transition items-center gap-1.5" title="Ativa o Estímulo Zero (Limpar a tela)">
             <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
               <line x1="1" y1="1" x2="23" y2="23"/>
@@ -549,7 +549,7 @@
           </div>
 
           <!-- Bateria 3 Eixos -->
-          <button id="btnOpenBattery" class="px-2 py-1.5 rounded-xl sm:rounded-lg bg-[var(--surface-soft)]/60 border border-[var(--border)]/80 hover:border-[var(--sage-border)] text-xs text-[var(--text)] flex items-center gap-1.5 gentle-transition" title="Check-in da Bateria">
+          <button id="btnOpenBattery" class="hidden sm:flex px-2 py-1.5 rounded-xl sm:rounded-lg bg-[var(--surface-soft)]/60 border border-[var(--border)]/80 hover:border-[var(--sage-border)] text-xs text-[var(--text)] items-center gap-1.5 gentle-transition" title="Check-in da Bateria">
             <span class="w-2 h-2 rounded-full bg-[var(--sage)] shadow-[0_0_6px_var(--sage)]"></span>
             <span class="hidden sm:inline text-xs">Bateria</span>
           </button>
@@ -798,6 +798,38 @@
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+        <!-- Modo Estímulo Zero (Limpar Tela) -->
+        <div class="p-3 rounded-lg bg-[var(--bg)] border border-[var(--border)] flex flex-col justify-between">
+          <div>
+            <span class="font-medium text-[var(--text)] block mb-1">Modo Estímulo Zero</span>
+            <p class="text-[11px] text-[var(--text-muted)]">Oculta temporariamente os cards e estímulos para descansar a mente.</p>
+          </div>
+          <button id="btnMoreToggleFog" class="mt-3 px-3 py-1.5 rounded-lg bg-[var(--surface-soft)] text-[var(--text)] border border-[var(--border)] hover:border-[var(--sage-border)] text-left flex items-center justify-between">
+            <span>Ativar Limpeza Visual</span>
+            <svg class="w-4 h-4 shrink-0 stroke-[1.5] text-[var(--sage)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Bateria Corporal 3 Eixos -->
+        <div class="p-3 rounded-lg bg-[var(--bg)] border border-[var(--border)] flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-medium text-[var(--text)]">Check-in de Bateria</span>
+              <span class="w-2 h-2 rounded-full bg-[var(--sage)] shadow-[0_0_6px_var(--sage)]"></span>
+            </div>
+            <p class="text-[11px] text-[var(--text-muted)]">Ajuste os eixos físico, cognitivo e emocional para calibrar a fricção das tarefas.</p>
+          </div>
+          <button id="btnMoreOpenBattery" class="mt-3 px-3 py-1.5 rounded-lg bg-[var(--surface-soft)] text-[var(--text)] border border-[var(--border)] hover:border-[var(--sage-border)] text-left flex items-center justify-between">
+            <span>Abrir Calibragem (3 Eixos)</span>
+            <svg class="w-4 h-4 shrink-0 stroke-[1.5] text-[var(--sage)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </button>
+        </div>
+
         <!-- Relatório para Terapia -->
         <div class="p-3 rounded-lg bg-[var(--bg)] border border-[var(--border)] flex flex-col justify-between">
           <div>
@@ -3907,6 +3939,28 @@
         document.getElementById('btnCloseMore').addEventListener('click', () => {
           document.getElementById('moreDrawer').classList.add('hidden');
         });
+
+        const btnMoreToggleFog = document.getElementById('btnMoreToggleFog');
+        if (btnMoreToggleFog) {
+          btnMoreToggleFog.addEventListener('click', () => {
+            document.body.classList.add('extreme-fog-mode');
+            ['moreDrawer', 'batteryDrawer', 'anchorsDrawer', 'anchorsBackdrop', 'crisisDrawer', 'soundscapeMenu'].forEach(id => {
+              const el = document.getElementById(id);
+              if (el) el.classList.add('hidden');
+            });
+            triggerSoftHaptic(15);
+          });
+        }
+
+        const btnMoreOpenBattery = document.getElementById('btnMoreOpenBattery');
+        if (btnMoreOpenBattery) {
+          btnMoreOpenBattery.addEventListener('click', () => {
+            document.getElementById('moreDrawer').classList.add('hidden');
+            const bDrawer = document.getElementById('batteryDrawer');
+            if (bDrawer) bDrawer.classList.remove('hidden');
+            triggerSoftHaptic(15);
+          });
+        }
 
         document.getElementById('btnOpenTherapyReport').addEventListener('click', () => {
           generateTherapyReport();
