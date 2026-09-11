@@ -7,10 +7,16 @@
 
 <br/>
 
-[![PWA](https://img.shields.io/badge/PWA-100%25%20Offline--First-68a090?style=for-the-badge&logo=pwa&logoColor=white)](https://github.com)
-[![Privacy](https://img.shields.io/badge/Privacidade-Zero%20Tracking%20%7C%20Local%20Only-57887a?style=for-the-badge&logo=adguard&logoColor=white)](https://github.com)
-[![Crypto](https://img.shields.io/badge/Criptografia-Web%20Crypto%20AES--GCM-2c3e50?style=for-the-badge&logo=vault&logoColor=white)](https://github.com)
+[![Acessar Respiro Online](https://img.shields.io/badge/Acessar%20Online-owelton.github.io%2FRespiro-68a090?style=for-the-badge&logo=googlechrome&logoColor=white)](https://owelton.github.io/Respiro/)
+<br/>
+[![PWA](https://img.shields.io/badge/PWA-100%25%20Offline--First-57887a?style=for-the-badge&logo=pwa&logoColor=white)](https://owelton.github.io/Respiro/)
+[![Privacy](https://img.shields.io/badge/Privacidade-Zero%20Tracking%20%7C%20Local%20Only-3d6056?style=for-the-badge&logo=adguard&logoColor=white)](https://owelton.github.io/Respiro/)
+[![Crypto](https://img.shields.io/badge/Criptografia-Web%20Crypto%20AES--GCM-2c3e50?style=for-the-badge&logo=vault&logoColor=white)](https://owelton.github.io/Respiro/)
 [![License: All Rights Reserved](https://img.shields.io/badge/Licença-Todos%20os%20Direitos%20Reservados-b91c1c?style=for-the-badge&logo=shield)](LICENSE)
+
+<br/>
+
+👉 **[Acesse a versão ao vivo do Respiro: owelton.github.io/Respiro](https://owelton.github.io/Respiro/)**
 
 <br/>
 
@@ -147,9 +153,7 @@ graph LR
 
 ## 📲 Como Instalar e Usar no Celular (PWA)
 
-O **Respiro** é um aplicativo progressivo (PWA) que funciona exatamente como um app nativo no celular, com acesso instantâneo e sem precisar baixar nada de lojas de aplicativos:
-
-1. **Abra o link do projeto** no navegador do seu smartphone (Safari no iPhone ou Chrome no Android).
+1. **Acesse o link oficial: [owelton.github.io/Respiro](https://owelton.github.io/Respiro/)** no navegador do seu celular (Safari no iPhone ou Chrome no Android).
 2. **Adicione à tela de início:**
    - **No Android (Chrome):** Toque no menu de três pontos $\rightarrow$ **"Instalar aplicativo"** ou **"Adicionar à tela inicial"**.
    - **No iPhone (Safari):** Toque no botão de **Compartilhar** (ícone com seta para cima) $\rightarrow$ **"Adicionar à Tela de Início"**.
