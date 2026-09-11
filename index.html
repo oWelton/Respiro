@@ -1637,38 +1637,51 @@
 
       <!-- ETAPA 2: A CALIBRAGEM INICIAL (PRIMEIRO POUSO) -->
       <div id="onboardingStep2" class="hidden w-full flex flex-col items-center animate-gentle-slide">
-        <!-- Ícone sutil da calibração -->
-        <div class="w-11 h-11 rounded-full bg-[var(--surface-soft)] border border-white/10 flex items-center justify-center mb-3 text-[var(--sage)]">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        <!-- Ícone Botânico / Refúgio da Calibração (Folha Respiro em Verde-Sálvia) -->
+        <div class="w-12 h-12 rounded-full bg-[var(--sage-soft)] border border-[var(--sage-border)] flex items-center justify-center mb-3 text-[var(--sage)] shadow-[0_0_16px_rgba(104,160,144,0.15)]">
+          <svg class="w-6 h-6 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
           </svg>
         </div>
 
         <h3 class="font-editorial text-xl text-[var(--text)] font-normal mb-1.5 tracking-tight">Como seu corpo e mente estão agora?</h3>
         <p class="text-xs text-[var(--text-muted)] mb-5">Escolha o ritmo que mais acolhe seu estado neste momento:</p>
 
-        <!-- Opções de Calibração -->
+        <!-- Opções de Calibração com SVGs Lineares Suaves (Zero emojis OS destoantes) -->
         <div class="w-full space-y-2.5 mb-5 text-left">
-          <!-- Opção 1: Sem Energia -->
+          <!-- Opção 1: Sem Energia (Nuvem em traço fino ardósia/sálvia) -->
           <button onclick="concluirBoasVindas('sem_energia')" class="w-full p-3.5 rounded-2xl bg-[var(--bg)] border border-[var(--border)] hover:border-[var(--sage-border)] hover:bg-[var(--surface-soft)] text-left gentle-transition flex items-center justify-between group active:scale-[0.98] cursor-pointer">
-            <div>
-              <div class="text-xs sm:text-sm font-medium text-[var(--text)] group-hover:text-[var(--sage)] flex items-center gap-1.5">
-                <span>☁️</span>
-                <span>Sem Energia (Névoa)</span>
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-[var(--sage-soft)] border border-[var(--sage-border)] flex items-center justify-center text-[var(--sage)] shrink-0 group-hover:scale-105 gentle-transition">
+                <svg class="w-4 h-4 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+                </svg>
+              </span>
+              <div>
+                <div class="text-xs sm:text-sm font-medium text-[var(--text)] group-hover:text-[var(--sage)]">
+                  Sem Energia (Névoa)
+                </div>
+                <div class="text-[11px] text-[var(--text-muted)] mt-0.5">Corpo pesado, lentidão, difícil mover</div>
               </div>
-              <div class="text-[11px] text-[var(--text-muted)] mt-0.5">Corpo pesado, lentidão, difícil mover</div>
             </div>
             <span class="text-xs text-[var(--text-muted)] group-hover:text-[var(--sage)] group-hover:translate-x-0.5 gentle-transition">→</span>
           </button>
 
-          <!-- Opção 2: Mente Acelerada -->
+          <!-- Opção 2: Mente Acelerada (Raio linear suave ciano) -->
           <button onclick="concluirBoasVindas('mente_acelerada')" class="w-full p-3.5 rounded-2xl bg-[var(--bg)] border border-[var(--border)] hover:border-cyan-500/40 hover:bg-[var(--surface-soft)] text-left gentle-transition flex items-center justify-between group active:scale-[0.98] cursor-pointer">
-            <div>
-              <div class="text-xs sm:text-sm font-medium text-[var(--text)] group-hover:text-cyan-300 flex items-center gap-1.5">
-                <span>⚡</span>
-                <span>Mente Acelerada (Tempestade)</span>
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-cyan-950/40 border border-cyan-500/20 flex items-center justify-center text-cyan-300 shrink-0 group-hover:scale-105 gentle-transition">
+                <svg class="w-4 h-4 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                </svg>
+              </span>
+              <div>
+                <div class="text-xs sm:text-sm font-medium text-[var(--text)] group-hover:text-cyan-300">
+                  Mente Acelerada (Tempestade)
+                </div>
+                <div class="text-[11px] text-[var(--text-muted)] mt-0.5">Peito apertado, pensamentos rápidos</div>
               </div>
-              <div class="text-[11px] text-[var(--text-muted)] mt-0.5">Peito apertado, pensamentos rápidos</div>
             </div>
             <span class="text-xs text-[var(--text-muted)] group-hover:text-cyan-300 group-hover:translate-x-0.5 gentle-transition">→</span>
           </button>
