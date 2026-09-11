@@ -150,7 +150,7 @@ Como o projeto é construído em tecnologia web nativa sem necessidade de etapa 
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/SEU-USUARIO/respiro.git
+   git clone https://github.com/<seu-usuario>/respiro.git
    cd respiro
    ```
 
@@ -170,20 +170,15 @@ Como o projeto é construído em tecnologia web nativa sem necessidade de etapa 
 
 ---
 
-## 🌐 Publicando no GitHub Pages (Grátis e Imediato)
+## 📲 Como Instalar e Usar no Celular (PWA)
 
-Você pode disponibilizar seu Respiro online publicamente no GitHub Pages em menos de 1 minuto:
+O **Respiro** é um aplicativo progressivo (PWA) que funciona exatamente como um app nativo no celular, com acesso instantâneo e sem precisar baixar nada de lojas de aplicativos:
 
-1. No seu repositório no GitHub, clique na aba **Settings** (Configurações).
-2. No menu lateral esquerdo, clique em **Pages**.
-3. Na seção **Build and deployment** $\rightarrow$ **Branch**:
-   - Selecione a branch `main`.
-   - Mantenha a pasta `/ (root)`.
-4. Clique em **Save**.
-5. Em poucos segundos, o GitHub fornecerá a URL pública do seu app:
-   `https://SEU-USUARIO.github.io/respiro/`
-
-Pronto! Qualquer pessoa (ou você mesmo no celular) poderá abrir o link e clicar em **"Instalar Aplicativo"** para ter o Respiro instalado na tela inicial do celular como um app nativo.
+1. **Abra o link do projeto** no navegador do seu smartphone (Safari no iPhone ou Chrome no Android).
+2. **Adicione à tela de início:**
+   - **No Android (Chrome):** Toque no menu de três pontos $\rightarrow$ **"Instalar aplicativo"** ou **"Adicionar à tela inicial"**.
+   - **No iPhone (Safari):** Toque no botão de **Compartilhar** (ícone com seta para cima) $\rightarrow$ **"Adicionar à Tela de Início"**.
+3. O ícone do **Respiro** aparecerá na sua tela inicial e passará a funcionar **100% offline**, com carregamento imediato e suporte a gestos nativos.
 
 ---
 
