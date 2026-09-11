@@ -10,8 +10,7 @@
 [![PWA](https://img.shields.io/badge/PWA-100%25%20Offline--First-68a090?style=for-the-badge&logo=pwa&logoColor=white)](https://github.com)
 [![Privacy](https://img.shields.io/badge/Privacidade-Zero%20Tracking%20%7C%20Local%20Only-57887a?style=for-the-badge&logo=adguard&logoColor=white)](https://github.com)
 [![Crypto](https://img.shields.io/badge/Criptografia-Web%20Crypto%20AES--GCM-2c3e50?style=for-the-badge&logo=vault&logoColor=white)](https://github.com)
-[![Audio](https://img.shields.io/badge/Som-Web%20Audio%20Sintetizado-34495e?style=for-the-badge&logo=audacity&logoColor=white)](https://github.com)
-[![License: MIT](https://img.shields.io/badge/Licença-MIT-8bbcb0?style=for-the-badge)](LICENSE)
+[![License: All Rights Reserved](https://img.shields.io/badge/Licença-Todos%20os%20Direitos%20Reservados-b91c1c?style=for-the-badge&logo=shield)](LICENSE)
 
 <br/>
 
@@ -182,8 +181,14 @@ O **Respiro** é um aplicativo progressivo (PWA) que funciona exatamente como um
 
 ---
 
-## 📄 Licença & Propósito Social
+## 🔒 Direitos Autorais & Propriedade Intelectual
 
-Distribuído sob a licença **MIT**. Veja [LICENSE](LICENSE) para mais detalhes.
+**Copyright © 2026 Welton Moreira. Todos os direitos reservados.**
+
+Este projeto e seu código-fonte são de criação autoral e intelectual exclusiva de **Welton Moreira**.
+
+- 🚫 **Uso Comercial Estritamente Proibido:** É vedada qualquer utilização, reprodução, comercialização, revenda ou apropriação deste software ou de qualquer fração de seu código por empresas, startups, instituições ou terceiros.
+- 🚫 **Proibida a Distribuição e Venda:** Não é permitida a criação de versões derivadas com fins lucrativos ou a incorporação deste código em outros produtos ou serviços.
+- 👁️ **Finalidade Exclusiva:** O código é disponibilizado publicamente neste repositório exclusivamente para apreciação técnica, consulta e exibição de portfólio autoral.
 
 > **Nota de Cuidado:** O Respiro é uma ferramenta de apoio neuroergonômico e ativação comportamental, mas **não substitui** acompanhamento médico ou psicoterapêutico profissional. Se estiver em sofrimento agudo no Brasil, ligue gratuitamente para o **Centro de Valorização da Vida (CVV)** pelo número **188** ou acesse [cvv.org.br](https://www.cvv.org.br).
