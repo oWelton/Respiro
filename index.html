@@ -2385,7 +2385,9 @@
         contact: { name: '', phone: '' },
         currentTask: null,
         taskStack: [],
+        decompositionStep: 1, // 1 = Inicial, 2 = Micro, 3 = Repouso
         isDecomposed: false,
+        lastCompletedStep: 1,
         preMood: 3,
         postMood: 4,
         history: [],
@@ -2465,6 +2467,7 @@
               const parsed = JSON.parse(raw);
               Object.assign(state, parsed);
               if (parsed.mindState) state.mindState = parsed.mindState;
+              if (parsed.decompositionStep) state.decompositionStep = parsed.decompositionStep;
             }
           }
         } catch (e) {
@@ -2480,6 +2483,8 @@
             contact: state.contact,
             currentTask: state.currentTask,
             taskStack: state.taskStack,
+            decompositionStep: state.decompositionStep || 1,
+            isDecomposed: state.isDecomposed,
             preMood: state.preMood,
             history: state.history,
             positiveAnchors: state.positiveAnchors,
@@ -2752,8 +2757,20 @@
           fisiologico_sos: 'Desativação Fisiológica SOS',
           aterramento: 'Ancoragem & Aterramento'
         };
+        const defaultDecomp = {
+          titulo: 'Respirar fundo e soltar o ar devagar',
+          explicacao: 'Apenas solte o peso dos ombros e descanse o corpo agora.'
+        };
+        const defaultPasso3 = {
+          titulo: 'Apenas fechar os olhos e descansar por 1 minuto',
+          explicacao: 'Você já fez o suficiente por hoje. Apenas permaneça onde está e respire devagar.'
+        };
+
+        const decomp = t.decomposicao || (t.passos && t.passos[1]) || defaultDecomp;
+        const p3 = t.passo3 || (t.passos && t.passos[2]) || defaultPasso3;
+
         return {
-          id: t.id,
+          id: t.id || ('task_' + Date.now()),
           categoria: t.categoria || 'sensorial',
           category: t.category || categoryMap[t.categoria] || 'Autocuidado',
           foco: t.foco || 'geral',
@@ -2766,9 +2783,13 @@
           title: t.titulo || t.title || '',
           explicacao: t.explicacao || t.description || '',
           description: t.explicacao || t.description || '',
-          decomposicao: t.decomposicao || {
-            titulo: 'Respirar fundo e soltar o ar devagar',
-            explicacao: 'Apenas solte o peso dos ombros e descanse o corpo agora.'
+          decomposicao: {
+            titulo: decomp?.titulo || defaultDecomp.titulo,
+            explicacao: decomp?.explicacao || defaultDecomp.explicacao
+          },
+          passo3: {
+            titulo: p3?.titulo || defaultPasso3.titulo,
+            explicacao: p3?.explicacao || defaultPasso3.explicacao
           }
         };
       }
@@ -2777,9 +2798,16 @@
         return taskEngine.getProximaMeta(getBatteryLevel(), false, excludeId);
       }
 
-      function setTask(task, isDecomposed = false) {
+      function setTask(task, step = 1) {
         state.currentTask = normalizeTask(task);
-        state.isDecomposed = !!isDecomposed;
+        if (typeof step === 'number') {
+          state.decompositionStep = step;
+        } else if (step === true) {
+          state.decompositionStep = 2;
+        } else {
+          state.decompositionStep = 1;
+        }
+        state.isDecomposed = (state.decompositionStep > 1);
         renderCurrentTask();
         persistState();
       }
@@ -2852,6 +2880,8 @@
 
       function decomposeCurrentTask() {
         if (!state.currentTask) return;
+        const currentStep = state.decompositionStep || 1;
+        if (currentStep >= 3) return; // Passo 3 já é o patamar mínimo de repouso
         triggerSoftHaptic([15, 25]);
 
         const titleEl = document.getElementById('taskTitle');
@@ -2869,35 +2899,18 @@
         }
 
         setTimeout(() => {
-          if (!state.isDecomposed) {
-            // 1º clique: Suaviza exibindo a decomposição da tarefa atual
+          if (currentStep === 1) {
+            // Passo 1 -> 2: Exibe task.decomposicao (ou task.passos[1]). Atualiza o badge superior para Passo 2/3 (Micro).
+            state.decompositionStep = 2;
             state.isDecomposed = true;
             renderCurrentTask();
             showGentleFeedback('A meta foi suavizada para o micropasso mais gentil. Respeite seu ritmo.');
-          } else {
-            // 2º clique consecutivo (já está dentro da decomposição):
-            // Reduz automaticamente o nível de bateria para 1 e sorteia uma tarefa puramente sensorial/biológica de cama
-            state.battery.physical = 1;
-            state.battery.cognitive = 1;
-            state.battery.emotional = 1;
-            document.getElementById('inputPhysical').value = 1;
-            document.getElementById('inputCognitive').value = 1;
-            document.getElementById('inputEmotional').value = 1;
-            document.getElementById('labelPhysVal').textContent = 'Nível 1/5';
-            document.getElementById('labelCogVal').textContent = 'Nível 1/5';
-            document.getElementById('labelEmoVal').textContent = 'Nível 1/5';
-            document.getElementById('calculatedCharge').textContent = getChargeDescription(1).label;
-            renderBatterySummary();
-            persistState();
-
-            // Sorteia uma tarefa puramente sensorial ou biológica de cama
-            const bedTasks = BANCO_MICROMETAS.filter(t => t.atrito === 1 && t.local === 'cama_sofa' && (t.categoria === 'sensorial' || t.categoria === 'biologico') && t.id !== state.currentTask.id);
-            const emergencyTask = bedTasks.length > 0
-              ? bedTasks[Math.floor(Math.random() * bedTasks.length)]
-              : BANCO_MICROMETAS[0];
-
-            setTask(emergencyTask, false);
-            showGentleFeedback('Carga ajustada para Nível 1. Modo repouso ativado com acolhimento total.');
+          } else if (currentStep === 2) {
+            // Passo 2 -> 3: Se task.passo3 existir, renderiza ele. Se NÃO existir (fallback universal), renderiza micropasso passivo automático
+            state.decompositionStep = 3;
+            state.isDecomposed = true;
+            renderCurrentTask();
+            showGentleFeedback('Você já fez o suficiente por hoje. Apenas permaneça onde está e respire devagar.');
           }
 
           if (titleEl) {
@@ -2912,7 +2925,7 @@
 
       function switchSameFrictionTask() {
         if (!state.currentTask) {
-          setTask(taskEngine.getProximaMeta(getBatteryLevel()), false);
+          setTask(taskEngine.getProximaMeta(getBatteryLevel()), 1);
           return;
         }
         triggerSoftHaptic(15);
@@ -2936,7 +2949,8 @@
         }
 
         setTimeout(() => {
-          setTask(nextTask, false);
+          // Reset para Passo 1 ao trocar
+          setTask(nextTask, 1);
           if (titleEl) {
             titleEl.style.opacity = '1';
             titleEl.style.transform = 'translateY(0)';
@@ -3590,30 +3604,59 @@
       function renderCurrentTask() {
         if (!state.currentTask) return;
 
-        const isDecomp = !!state.isDecomposed;
-        const taskTitle = (isDecomp && state.currentTask.decomposicao)
-          ? state.currentTask.decomposicao.titulo
-          : (state.currentTask.titulo || state.currentTask.title);
+        const step = state.decompositionStep || 1;
+        let taskTitle = '';
+        let taskDesc = '';
 
-        const taskDesc = (isDecomp && state.currentTask.decomposicao)
-          ? state.currentTask.decomposicao.explicacao
-          : (state.currentTask.explicacao || state.currentTask.description);
+        if (step === 3) {
+          taskTitle = state.currentTask?.passo3?.titulo 
+            || 'Apenas fechar os olhos e descansar por 1 minuto';
+          taskDesc = state.currentTask?.passo3?.explicacao 
+            || 'Você já fez o suficiente por hoje. Apenas permaneça onde está e respire devagar.';
+        } else if (step === 2) {
+          taskTitle = state.currentTask?.decomposicao?.titulo 
+            || state.currentTask?.passos?.[1]?.titulo 
+            || 'Respirar fundo e soltar o ar devagar';
+          taskDesc = state.currentTask?.decomposicao?.explicacao 
+            || state.currentTask?.passos?.[1]?.explicacao 
+            || 'Apenas solte o peso dos ombros e descanse o corpo agora.';
+        } else {
+          taskTitle = state.currentTask?.titulo || state.currentTask?.title || '';
+          taskDesc = state.currentTask?.explicacao || state.currentTask?.description || '';
+        }
 
-        document.getElementById('taskTitle').textContent = taskTitle;
-        document.getElementById('taskDescription').textContent = taskDesc;
+        const titleEl = document.getElementById('taskTitle');
+        const descEl = document.getElementById('taskDescription');
+        if (titleEl) titleEl.textContent = taskTitle;
+        if (descEl) descEl.textContent = taskDesc;
 
-        const catName = state.currentTask.category || 'Autocuidado';
-        document.getElementById('taskCategoryBadge').textContent = isDecomp ? `${catName} (Suavizado)` : catName;
+        const catName = state.currentTask?.category || 'Autocuidado';
+        const catBadge = document.getElementById('taskCategoryBadge');
+        if (catBadge) {
+          if (step === 3) {
+            catBadge.textContent = `${catName} (Apenas repouso)`;
+          } else if (step === 2) {
+            catBadge.textContent = `${catName} (Micro)`;
+          } else {
+            catBadge.textContent = catName;
+          }
+        }
 
-        const f = isDecomp ? 1 : (state.currentTask.atrito || state.currentTask.friction || 1);
+        const f = step > 1 ? 1 : (state.currentTask?.atrito || state.currentTask?.friction || 1);
         const fDesc = f === 1 ? 'Passivo / Cama' : f === 2 ? 'Leve movimento' : 'Locomoção';
-        document.getElementById('taskFrictionBadge').textContent = `Atrito ${f}/3 (${fDesc})`;
-        document.getElementById('frictionBar').style.width = `${(f / 3) * 100}%`;
+        const frictionBadge = document.getElementById('taskFrictionBadge');
+        if (frictionBadge) frictionBadge.textContent = `Atrito ${f}/3 (${fDesc})`;
+        const frictionBar = document.getElementById('frictionBar');
+        if (frictionBar) frictionBar.style.width = `${(f / 3) * 100}%`;
 
+        // Badge superior de profundidade fractal
         const depthEl = document.getElementById('fractalDepthIndicator');
         if (depthEl) {
-          if (isDecomp) {
-            depthEl.textContent = 'Micropasso Decomposto';
+          if (step === 3) {
+            depthEl.textContent = 'Passo 3/3 (Apenas repouso)';
+            depthEl.className = 'text-[11px] text-[var(--sage)] font-medium';
+          } else if (step === 2) {
+            depthEl.textContent = 'Passo 2/3 (Micro)';
             depthEl.className = 'text-[11px] text-[var(--sage)] font-medium';
           } else {
             depthEl.textContent = 'Passo inicial';
@@ -3621,10 +3664,29 @@
           }
         }
 
-        document.getElementById('postMoodSection').classList.add('hidden');
-        document.getElementById('primaryActionButtons').classList.remove('hidden');
-        document.getElementById('deltaFeedback').classList.add('hidden');
-        document.getElementById('timer30Container').classList.add('hidden');
+        // Estado e estilo do botão "Hoje está muito difícil"
+        const btnTooHard = document.getElementById('btnTooHard');
+        if (btnTooHard) {
+          const btnSpan = btnTooHard.querySelector('span');
+          if (step === 3) {
+            if (btnSpan) btnSpan.textContent = 'Passo mínimo atingido';
+            btnTooHard.classList.add('opacity-50', 'pointer-events-none');
+            btnTooHard.setAttribute('disabled', 'true');
+          } else {
+            if (btnSpan) btnSpan.textContent = 'Hoje está muito difícil';
+            btnTooHard.classList.remove('opacity-50', 'pointer-events-none');
+            btnTooHard.removeAttribute('disabled');
+          }
+        }
+
+        const postMoodSec = document.getElementById('postMoodSection');
+        if (postMoodSec) postMoodSec.classList.add('hidden');
+        const primaryBtns = document.getElementById('primaryActionButtons');
+        if (primaryBtns) primaryBtns.classList.remove('hidden');
+        const deltaFeed = document.getElementById('deltaFeedback');
+        if (deltaFeed) deltaFeed.classList.add('hidden');
+        const timer30 = document.getElementById('timer30Container');
+        if (timer30) timer30.classList.add('hidden');
       }
 
       function renderBatterySummary() {
@@ -4284,6 +4346,7 @@
 
         // Concluir Ação
         document.getElementById('btnComplete').addEventListener('click', () => {
+          state.lastCompletedStep = state.decompositionStep || 1;
           document.getElementById('primaryActionButtons').classList.add('hidden');
           document.getElementById('postMoodSection').classList.remove('hidden');
         });
@@ -4306,10 +4369,19 @@
 
           state.consecutiveTooHardCount = 0;
           const delta = state.postMood - state.preMood;
-          const taskTitle = (state.isDecomposed && state.currentTask.decomposicao)
-            ? state.currentTask.decomposicao.titulo
-            : (state.currentTask.titulo || state.currentTask.title);
-          const taskFriction = state.isDecomposed ? 1 : (state.currentTask.atrito || state.currentTask.friction || 1);
+          const completedStep = state.lastCompletedStep || state.decompositionStep || 1;
+          
+          let taskTitle = state.currentTask?.titulo || state.currentTask?.title || '';
+          if (completedStep === 3) {
+            taskTitle = state.currentTask?.passo3?.titulo 
+              || 'Apenas fechar os olhos e descansar por 1 minuto';
+          } else if (completedStep === 2) {
+            taskTitle = state.currentTask?.decomposicao?.titulo 
+              || state.currentTask?.passos?.[1]?.titulo 
+              || 'Respirar fundo e soltar o ar devagar';
+          }
+
+          const taskFriction = completedStep > 1 ? 1 : (state.currentTask?.atrito || state.currentTask?.friction || 1);
 
           const entry = {
             id: 'hist_' + Date.now(),
@@ -4384,7 +4456,7 @@
           triggerSoftHaptic(15);
           document.getElementById('postCompletionChoiceBox').classList.add('hidden');
           document.getElementById('primaryActionButtons').classList.remove('hidden');
-          setTask(taskEngine.getProximaMeta(getBatteryLevel()), false);
+          setTask(taskEngine.getProximaMeta(getBatteryLevel()), 1);
 
           const titleEl = document.getElementById('taskTitle');
           const descEl = document.getElementById('taskDescription');
@@ -4428,7 +4500,7 @@
           document.getElementById('preMoodSection').classList.remove('hidden');
           document.getElementById('secondaryButtonsRow').classList.remove('hidden');
           document.getElementById('primaryActionButtons').classList.remove('hidden');
-          setTask(taskEngine.getProximaMeta(getBatteryLevel()), false);
+          setTask(taskEngine.getProximaMeta(getBatteryLevel()), 1);
         });
 
         // Sugestão Silenciosa de Preservação Máxima
@@ -4849,9 +4921,10 @@
         setMindState(state.mindState || 'nevoa', false);
 
         if (!state.currentTask) {
-          setTask(taskEngine.getProximaMeta(getBatteryLevel()), false);
+          setTask(taskEngine.getProximaMeta(getBatteryLevel()), 1);
         } else {
           state.currentTask = normalizeTask(state.currentTask);
+          state.decompositionStep = state.decompositionStep || 1;
           renderCurrentTask();
         }
 
