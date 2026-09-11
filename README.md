@@ -16,6 +16,9 @@
 [![PWA](https://img.shields.io/badge/PWA-100%25%20Offline--First-57887a?style=for-the-badge&logo=pwa&logoColor=white)](https://owelton.github.io/Respiro/)
 [![Privacy](https://img.shields.io/badge/Privacidade-Zero%20Tracking%20%7C%20Local%20Only-3d6056?style=for-the-badge&logo=adguard&logoColor=white)](https://owelton.github.io/Respiro/)
 [![Crypto](https://img.shields.io/badge/Criptografia-Web%20Crypto%20AES--GCM-2c3e50?style=for-the-badge&logo=vault&logoColor=white)](https://owelton.github.io/Respiro/)
+<br/>
+[![Audio](https://img.shields.io/badge/Som%20Nativo-Web%20Audio%20Sintetizado-334155?style=for-the-badge&logo=audacity&logoColor=white)](https://owelton.github.io/Respiro/)
+[![Canvas](https://img.shields.io/badge/Terrário-HTML5%20Canvas%20Procedural-475569?style=for-the-badge&logo=html5&logoColor=white)](https://owelton.github.io/Respiro/)
 [![License: All Rights Reserved](https://img.shields.io/badge/Licença-Todos%20os%20Direitos%20Reservados-b91c1c?style=for-the-badge&logo=shield)](LICENSE)
 
 <br/><br/>
