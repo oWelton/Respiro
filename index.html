@@ -865,6 +865,21 @@
             </svg>
           </button>
         </div>
+
+        <!-- Manifesto de Acolhimento (Rever Onboarding) -->
+        <div class="p-3 rounded-lg bg-[var(--bg)] border border-[var(--border)] flex flex-col justify-between sm:col-span-2">
+          <div class="flex items-start justify-between">
+            <div>
+              <span class="font-medium text-[var(--text)] block mb-0.5">Manifesto do Respiro</span>
+              <p class="text-[11px] text-[var(--text-muted)]">Releia os 3 princípios de acolhimento e recalibre seu ritmo sem qualquer pressa.</p>
+            </div>
+            <span class="text-sm select-none ml-2">🌿</span>
+          </div>
+          <button id="btnReopenOnboarding" class="mt-3 px-3 py-1.5 rounded-lg bg-[var(--surface-soft)] text-[var(--text)] border border-[var(--border)] hover:border-[var(--sage-border)] text-left flex items-center justify-between">
+            <span>Rever Princípios de Acolhimento</span>
+            <span class="text-[var(--sage)]">→</span>
+          </button>
+        </div>
       </div>
 
       <!-- Botão de Instalar PWA se elegível -->
@@ -1572,6 +1587,98 @@
       <button id="btnCloseLullisModal" class="w-full py-2.5 px-4 rounded-xl bg-[var(--sage)] text-[var(--bg)] hover:bg-[var(--sage-hover)] text-xs font-medium gentle-transition shadow-sm">
         Acolher com Carinho
       </button>
+    </div>
+  </div>
+
+  <!-- MODAL DE BOAS-VINDAS / ONBOARDING (O MANIFESTO DO RESPIRO) -->
+  <div id="modal-boas-vindas" class="hidden fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-500">
+    <div class="w-full max-w-sm rounded-3xl bg-[var(--surface)] border border-white/10 p-6 sm:p-7 shadow-2xl flex flex-col items-center text-center relative overflow-hidden animate-gentle-slide">
+      
+      <!-- Brilho ambiental sutil de fundo -->
+      <div class="absolute -top-10 -left-10 w-32 h-32 rounded-full bg-[var(--sage-soft)] blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-10 -right-10 w-32 h-32 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none"></div>
+
+      <!-- ETAPA 1: ACOLHIMENTO E FILOSOFIA -->
+      <div id="onboardingStep1" class="w-full flex flex-col items-center">
+        <!-- Logo Sutil com Pulso Lento -->
+        <div class="w-14 h-14 rounded-full bg-[var(--sage-soft)] border border-[var(--sage-border)] flex items-center justify-center mb-4 text-[var(--sage)] shadow-[0_0_16px_rgba(104,160,144,0.15)] animate-pulse">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+          </svg>
+        </div>
+
+        <!-- Título Serifado Editorial -->
+        <h2 class="font-editorial text-2xl text-[var(--text)] font-normal mb-2 tracking-tight">Um refúgio sem pressa.</h2>
+        
+        <!-- Microcopy de Despressurização e Acolhimento -->
+        <div class="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed space-y-2 mb-6 font-light">
+          <p>
+            Aqui você não precisa ser produtivo, cumprir metas ou manter sequências de dias.
+          </p>
+          <p class="text-[var(--text)] font-normal">
+            Seu único compromisso hoje é respirar e respeitar o tamanho da sua energia.
+          </p>
+        </div>
+
+        <!-- Pacto de Privacidade em 1 Frase -->
+        <div class="w-full py-2.5 px-3 rounded-xl bg-[var(--bg)] border border-white/5 flex items-center justify-center gap-2 text-[11px] text-[var(--text-muted)] mb-6">
+          <svg class="w-3.5 h-3.5 shrink-0 stroke-[1.5] text-[var(--sage)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+          </svg>
+          <span>🔒 Seus dados nunca saem deste aparelho. Sem contas na nuvem.</span>
+        </div>
+
+        <!-- Ação Primária: Começar suavemente -->
+        <button id="btnAvancarOnboarding" class="w-full py-3 px-4 rounded-xl bg-[var(--sage)] text-[var(--bg)] hover:bg-[var(--sage-hover)] text-xs sm:text-sm font-medium gentle-transition shadow-sm active:scale-[0.98] cursor-pointer">
+          Começar suavemente
+        </button>
+      </div>
+
+      <!-- ETAPA 2: A CALIBRAGEM INICIAL (PRIMEIRO POUSO) -->
+      <div id="onboardingStep2" class="hidden w-full flex flex-col items-center animate-gentle-slide">
+        <!-- Ícone sutil da calibração -->
+        <div class="w-11 h-11 rounded-full bg-[var(--surface-soft)] border border-white/10 flex items-center justify-center mb-3 text-[var(--sage)]">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+
+        <h3 class="font-editorial text-xl text-[var(--text)] font-normal mb-1.5 tracking-tight">Como seu corpo e mente estão agora?</h3>
+        <p class="text-xs text-[var(--text-muted)] mb-5">Escolha o ritmo que mais acolhe seu estado neste momento:</p>
+
+        <!-- Opções de Calibração -->
+        <div class="w-full space-y-2.5 mb-5 text-left">
+          <!-- Opção 1: Sem Energia -->
+          <button onclick="concluirBoasVindas('sem_energia')" class="w-full p-3.5 rounded-2xl bg-[var(--bg)] border border-[var(--border)] hover:border-[var(--sage-border)] hover:bg-[var(--surface-soft)] text-left gentle-transition flex items-center justify-between group active:scale-[0.98] cursor-pointer">
+            <div>
+              <div class="text-xs sm:text-sm font-medium text-[var(--text)] group-hover:text-[var(--sage)] flex items-center gap-1.5">
+                <span>☁️</span>
+                <span>Sem Energia (Névoa)</span>
+              </div>
+              <div class="text-[11px] text-[var(--text-muted)] mt-0.5">Corpo pesado, lentidão, difícil mover</div>
+            </div>
+            <span class="text-xs text-[var(--text-muted)] group-hover:text-[var(--sage)] group-hover:translate-x-0.5 gentle-transition">→</span>
+          </button>
+
+          <!-- Opção 2: Mente Acelerada -->
+          <button onclick="concluirBoasVindas('mente_acelerada')" class="w-full p-3.5 rounded-2xl bg-[var(--bg)] border border-[var(--border)] hover:border-cyan-500/40 hover:bg-[var(--surface-soft)] text-left gentle-transition flex items-center justify-between group active:scale-[0.98] cursor-pointer">
+            <div>
+              <div class="text-xs sm:text-sm font-medium text-[var(--text)] group-hover:text-cyan-300 flex items-center gap-1.5">
+                <span>⚡</span>
+                <span>Mente Acelerada (Tempestade)</span>
+              </div>
+              <div class="text-[11px] text-[var(--text-muted)] mt-0.5">Peito apertado, pensamentos rápidos</div>
+            </div>
+            <span class="text-xs text-[var(--text-muted)] group-hover:text-cyan-300 group-hover:translate-x-0.5 gentle-transition">→</span>
+          </button>
+        </div>
+
+        <button id="btnVoltarOnboarding" class="text-[11px] text-[var(--text-muted)] hover:text-[var(--text)] p-1 gentle-transition cursor-pointer">
+          ← Voltar à mensagem de acolhimento
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -2802,6 +2909,84 @@
           modal.classList.add('flex');
         }
       }
+
+      // ==========================================
+      // MANIFESTO DE ONBOARDING (3 PRINCÍPIOS CLÍNICOS)
+      // ==========================================
+      function verificarPrimeiroAcesso() {
+        const jaConhece = localStorage.getItem('respiro_onboarding_concluido');
+        const modal = document.getElementById('modal-boas-vindas');
+        if (!jaConhece && modal) {
+          modal.classList.remove('hidden');
+          modal.classList.remove('opacity-0');
+        }
+      }
+
+      function abrirOnboarding() {
+        const modal = document.getElementById('modal-boas-vindas');
+        const step1 = document.getElementById('onboardingStep1');
+        const step2 = document.getElementById('onboardingStep2');
+        if (!modal) return;
+        if (step1) step1.classList.remove('hidden');
+        if (step2) step2.classList.add('hidden');
+        modal.classList.remove('hidden');
+        modal.classList.remove('opacity-0');
+        triggerSoftHaptic(15);
+      }
+
+      function avancarParaCalibragem() {
+        const step1 = document.getElementById('onboardingStep1');
+        const step2 = document.getElementById('onboardingStep2');
+        if (step1 && step2) {
+          step1.classList.add('hidden');
+          step2.classList.remove('hidden');
+          triggerSoftHaptic(15);
+        }
+      }
+
+      function voltarParaAcolhimento() {
+        const step1 = document.getElementById('onboardingStep1');
+        const step2 = document.getElementById('onboardingStep2');
+        if (step1 && step2) {
+          step2.classList.add('hidden');
+          step1.classList.remove('hidden');
+          triggerSoftHaptic(10);
+        }
+      }
+
+      function concluirBoasVindas(modoInicial = 'sem_energia') {
+        const modoMapeado = (modoInicial === 'mente_acelerada' || modoInicial === 'tempestade')
+          ? 'tempestade'
+          : 'nevoa';
+
+        try {
+          localStorage.setItem('respiro_modo_atual', modoInicial);
+          localStorage.setItem('respiro_mind_state', modoMapeado);
+          localStorage.setItem('respiro_onboarding_concluido', 'true');
+        } catch(e){}
+
+        // Aplica o modo e escolhe uma micrometa compatível imediatamente
+        setMindState(modoMapeado, true);
+
+        triggerSoftHaptic([20, 35, 20]);
+        playGentleBell();
+
+        // Fade out suave da tela de boas-vindas
+        const modal = document.getElementById('modal-boas-vindas');
+        if (modal) {
+          modal.classList.add('opacity-0');
+          setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('opacity-0');
+          }, 500);
+        }
+      }
+
+      // Expõe para escopo global (eventos inline onclick)
+      window.concluirBoasVindas = concluirBoasVindas;
+      window.avancarParaCalibragem = avancarParaCalibragem;
+      window.voltarParaAcolhimento = voltarParaAcolhimento;
+      window.abrirOnboarding = abrirOnboarding;
 
       // ==========================================
       // MOTOR FRACTAL & CARGA
@@ -4247,6 +4432,23 @@
           generateTherapyReport();
         });
 
+        // Botões do Manifesto / Onboarding
+        const btnReopenOnb = document.getElementById('btnReopenOnboarding');
+        if (btnReopenOnb) {
+          btnReopenOnb.addEventListener('click', () => {
+            document.getElementById('moreDrawer').classList.add('hidden');
+            abrirOnboarding();
+          });
+        }
+        const btnAvancarOnb = document.getElementById('btnAvancarOnboarding');
+        if (btnAvancarOnb) {
+          btnAvancarOnb.addEventListener('click', avancarParaCalibragem);
+        }
+        const btnVoltarOnb = document.getElementById('btnVoltarOnboarding');
+        if (btnVoltarOnb) {
+          btnVoltarOnb.addEventListener('click', voltarParaAcolhimento);
+        }
+
         // Criptografia Modal
         const cryptoModal = document.getElementById('cryptoModal');
         document.getElementById('btnSetupCrypto').addEventListener('click', () => {
@@ -5151,6 +5353,7 @@
         renderHistory();
         renderStonePath();
         setupEventListeners();
+        verificarPrimeiroAcesso();
         registerServiceWorker();
 
         setTimeout(() => {
