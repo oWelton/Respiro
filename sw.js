@@ -1,6 +1,6 @@
 // Copyright (c) 2026 Welton Moreira. Todos os direitos reservados.
 // Service Worker para Respiro (100% Offline-first)
-const CACHE_NAME = 'respiro-cache-v16';
+const CACHE_NAME = 'respiro-cache-v17';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
