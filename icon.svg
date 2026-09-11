@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="128" fill="#121417"/>
+  <circle cx="256" cy="256" r="180" fill="#1a1d21" stroke="#2a2f35" stroke-width="8"/>
+  <circle cx="256" cy="256" r="120" fill="rgba(104, 160, 144, 0.12)"/>
+  <!-- Folha / Broto de Sálvia -->
+  <path d="M256 360 C256 360 210 320 210 250 C210 180 256 140 256 140 C256 140 302 180 302 250 C302 320 256 360 256 360 Z" fill="#68a090"/>
+  <path d="M256 360 L256 150" stroke="#121417" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="256" cy="140" r="10" fill="#8bbcb0"/>
+</svg>

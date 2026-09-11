@@ -1,0 +1,19 @@
+{
+  "name": "Respiro — Ativação Comportamental",
+  "short_name": "Respiro",
+  "description": "Ativação comportamental adaptativa e micrometas para baixa sobrecarga sensorial.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#121417",
+  "theme_color": "#121417",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "lifestyle", "wellness"]
+}
