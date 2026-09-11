@@ -141,31 +141,7 @@ graph LR
 - **PWA Ready:** Manifest configurado, ícone vetorial adaptativo e Service Worker com estratégia *Cache-First* garantindo execução completa sem internet.
 - **Dependências Externas:** Zero frameworks pesados (sem React, Vue ou Angular). Carregamento instantâneo de ~0.3s.
 
----
 
-## 🚀 Como Executar Localmente
-
-Como o projeto é construído em tecnologia web nativa sem necessidade de etapa de compilação (*build step*):
-
-1. **Clone o repositório:**
-   ```bash
-   git clone https://github.com/<seu-usuario>/respiro.git
-   cd respiro
-   ```
-
-2. **Abra diretamente no navegador:**
-   - Dê um duplo clique no arquivo `index.html`, ou
-   - Use uma extensão como *Live Server* no VSCode, ou
-   - Use qualquer servidor HTTP simples:
-     ```bash
-     # Usando Python
-     python -m http.server 8080
-     
-     # Ou usando Node.js
-     npx serve .
-     ```
-
-3. Acesse `http://localhost:8080` no navegador do celular ou computador.
 
 ---
 
