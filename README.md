@@ -191,7 +191,7 @@ Desenvolvido com carinho, estudo e propósito por **Welton Moreira**.
 <br/>
 
 [![GitHub](https://img.shields.io/badge/GitHub-owelton-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/owelton)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Conectar-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/welton-moreira/)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Conectar-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/welton-moreira-66268836b/)
 
 <br/>
 
