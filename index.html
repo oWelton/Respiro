@@ -1695,6 +1695,60 @@
     </div>
   </div>
 
+  <!-- MODAL DE RESUMO CLÍNICO / TERAPÊUTICO (ACOLHEDOR & EXPORTÁVEL) -->
+  <div id="modal-relatorio" class="fixed inset-0 z-[130] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden animate-gentle-slide">
+    <div class="w-full max-w-md rounded-3xl bg-[var(--surface)] border border-white/10 p-6 shadow-2xl flex flex-col max-h-[85vh] overflow-y-auto">
+      
+      <!-- Cabeçalho -->
+      <div class="flex items-center justify-between pb-4 border-b border-white/10">
+        <div>
+          <h3 class="font-editorial text-lg text-[var(--text)] font-medium">Relatório Terapêutico</h3>
+          <p class="text-xs text-[var(--text-muted)]">Padrões silenciosos registrados neste aparelho</p>
+        </div>
+        <button onclick="fecharModalRelatorio()" class="text-[var(--text-muted)] hover:text-[var(--text)] text-sm p-1.5 rounded-lg hover:bg-white/5 gentle-transition cursor-pointer" aria-label="Fechar relatório">✕</button>
+      </div>
+
+      <!-- Indicadores -->
+      <div class="space-y-4 my-5 text-left">
+        <div class="p-3.5 rounded-2xl bg-[var(--bg)] border border-[var(--border)]">
+          <span class="text-xs text-[var(--text-muted)] uppercase font-semibold block">Predomínio de Estado</span>
+          <p id="relatorio-predominio" class="text-sm font-medium text-[var(--text)] mt-0.5">Modo Névoa (Conservação / Baixa Energia)</p>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-[var(--bg)] border border-[var(--border)]">
+          <span class="text-xs text-[var(--text-muted)] uppercase font-semibold block">Micromovimentos Feitos</span>
+          <p id="relatorio-total" class="text-sm font-medium text-[var(--sage)] mt-0.5">0 passos firmes no caminho</p>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-[var(--bg)] border border-[var(--border)]">
+          <span class="text-xs text-[var(--text-muted)] uppercase font-semibold block">Âncoras mais eficientes</span>
+          <p id="relatorio-ancoras" class="text-sm text-[var(--text)] mt-0.5">Ações sensoriais e térmicas proporcionaram maior transição para o estado Neutro.</p>
+        </div>
+      </div>
+
+      <!-- Ações de Envio -->
+      <div class="pt-2 flex flex-col gap-2.5">
+        <button onclick="copiarRelatorioTexto()" class="w-full py-3 px-4 rounded-xl bg-[var(--surface-soft)] hover:bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--sage-border)] text-[var(--text)] text-sm font-medium gentle-transition flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]">
+          <svg class="w-4 h-4 text-[var(--sage)] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+          </svg>
+          <span>Copiar para WhatsApp/Terapeuta</span>
+        </button>
+
+        <button onclick="generateTherapyReport()" class="w-full py-2.5 px-3 rounded-xl bg-transparent hover:bg-white/5 border border-white/5 text-[var(--text-muted)] hover:text-[var(--text)] text-xs flex items-center justify-center gap-1.5 gentle-transition cursor-pointer">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
+            <path d="M6 14h12v8H6z"/>
+          </svg>
+          <span>Imprimir / Salvar em PDF</span>
+        </button>
+
+        <p id="msg-copiado" class="text-xs text-[var(--sage)] text-center hidden animate-gentle-slide">✓ Texto copiado para a área de transferência.</p>
+      </div>
+
+    </div>
+  </div>
+
   <!-- CONTAINER DE IMPRESSÃO EXCLUSIVO: RELATÓRIO PARA TERAPIA -->
   <div id="printReportContainer" class="hidden p-8 max-w-2xl mx-auto">
     <div class="border-b pb-4 mb-6">
@@ -2720,12 +2774,25 @@
       // ==========================================
       let audioCtx = null;
       let activeSoundNodes = [];
+      let activeGainNodes = [];
 
       function stopAllSounds() {
-        activeSoundNodes.forEach(node => {
-          try { node.stop(); node.disconnect(); } catch(e){}
-        });
-        activeSoundNodes = [];
+        const ctx = audioCtx;
+        if (ctx) {
+          activeGainNodes.forEach(g => {
+            try {
+              g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.4);
+            } catch(e){}
+          });
+        }
+        setTimeout(() => {
+          activeSoundNodes.forEach(node => {
+            try { node.stop(); node.disconnect(); } catch(e){}
+          });
+          activeSoundNodes = [];
+          activeGainNodes = [];
+        }, 420);
+
         state.soundscapeMode = 'off';
         const soundIcon = document.getElementById('soundIconSymbol');
         if (soundIcon) {
@@ -2749,7 +2816,7 @@
         state.soundscapeMode = mode;
 
         if (mode === 'brown') {
-          // Ruído Marrom Profundo
+          // Ruído Marrom Profundo Aveludado (Brownian Noise Puro via Web Audio API)
           const bufferSize = ctx.sampleRate * 2;
           const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
           const data = buffer.getChannelData(0);
@@ -2758,25 +2825,33 @@
             const white = Math.random() * 2 - 1;
             data[i] = (last + (0.02 * white)) / 1.02;
             last = data[i];
-            data[i] *= 3.2;
+            data[i] *= 3.5; // Ganho natural aveludado
           }
           const src = ctx.createBufferSource();
           src.buffer = buffer;
           src.loop = true;
 
+          // Filtro Passa-Baixas a 380Hz para abafar ruídos e acolher
           const filter = ctx.createBiquadFilter();
           filter.type = 'lowpass';
-          filter.frequency.value = 350;
+          filter.frequency.setValueAtTime(380, ctx.currentTime);
 
           const gain = ctx.createGain();
-          gain.gain.setValueAtTime(0.08, ctx.currentTime);
+          gain.gain.setValueAtTime(0.001, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.15, ctx.currentTime + 1.2); // Fade-in suave
 
           src.connect(filter);
           filter.connect(gain);
           gain.connect(ctx.destination);
           src.start(0);
+
           activeSoundNodes.push(src);
-          document.getElementById('soundIconSymbol').textContent = '☕';
+          activeGainNodes.push(gain);
+
+          const soundIcon = document.getElementById('soundIconSymbol');
+          if (soundIcon) {
+            soundIcon.innerHTML = `<svg class="w-4 h-4 shrink-0 text-[var(--sage)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>`;
+          }
 
         } else if (mode === 'rain') {
           // Chuva Mansa
@@ -2967,36 +3042,200 @@
         }
       }
 
-      function concluirBoasVindas(modoInicial = 'sem_energia') {
-        const modoMapeado = (modoInicial === 'mente_acelerada' || modoInicial === 'tempestade')
-          ? 'tempestade'
-          : 'nevoa';
+      // ==========================================
+      // CATÁLOGO INICIAL COM ATRITO CALIBRADO (PRIMEIRO POUSO)
+      // ==========================================
+      const BANCO_TAREFAS = {
+        nevoa: [
+          {
+            id: 'n1',
+            categoria: 'sensorial',
+            atrito: 1,
+            titulo: 'Virar o travesseiro para o lado fresco',
+            desc: 'O contato com uma superfície fria estimula sutilmente o sistema sensorial sem exigir movimento corporal expressivo.',
+            explicacao: 'O contato com uma superfície fria estimula sutilmente o sistema sensorial sem exigir movimento corporal expressivo.',
+            decomposicao: {
+              titulo: 'Apenas encostar a mão no lençol fresco',
+              explicacao: 'Sinta a temperatura sob a palma da mão por alguns segundos.'
+            }
+          },
+          {
+            id: 'n2',
+            categoria: 'biologico',
+            atrito: 1,
+            titulo: 'Soltar a mandíbula e descerrar os dentes',
+            desc: 'Mesmo deitado, o corpo acumula tensão no maxilar. Deixe a língua repousar solta na boca.',
+            explicacao: 'Mesmo deitado, o corpo acumula tensão no maxilar. Deixe a língua repousar solta na boca.',
+            decomposicao: {
+              titulo: 'Respirar fundo soltando o queixo',
+              explicacao: 'Apenas expire e sinta o peso do rosto relaxar.'
+            }
+          }
+        ],
+        tempestade: [
+          {
+            id: 't1',
+            categoria: 'fisiologico_sos',
+            atrito: 1,
+            titulo: 'Fazer 3 repetições do Suspiro Fisiológico',
+            desc: 'Duas inalações curtas pelo nariz seguidas por uma expiração longa e ruidosa pela boca.',
+            explicacao: 'Duas inalações curtas pelo nariz seguidas por uma expiração longa e ruidosa pela boca.',
+            decomposicao: {
+              titulo: 'Apenas uma expiração prolongada',
+              explicacao: 'Esvazie todo o ar dos pulmões devagar, como se assoprasse uma vela distante.'
+            }
+          },
+          {
+            id: 't2',
+            categoria: 'aterramento',
+            atrito: 1,
+            titulo: 'Pressionar as palmas das mãos uma contra a outra',
+            desc: 'Uma compressão firme ativa o sistema proprioceptivo e ancora a mente no corpo físico.',
+            explicacao: 'Uma compressão firme ativa o sistema proprioceptivo e ancora a mente no corpo físico.',
+            decomposicao: {
+              titulo: 'Sentir os pés tocando o solo',
+              explicacao: 'Perceba a gravidade agindo sob os calcanhares.'
+            }
+          }
+        ]
+      };
 
+      function carregarPrimeiraTarefa(modo) {
+        const lista = BANCO_TAREFAS[modo] || BANCO_TAREFAS.nevoa;
+        const primeira = lista[Math.floor(Math.random() * lista.length)];
+        setTask(primeira, 1);
+      }
+
+      function selecionarModoBoasVindas(modo) {
+        const modoNormalizado = (modo === 'mente_acelerada' || modo === 'tempestade') ? 'tempestade' : 'nevoa';
         try {
-          localStorage.setItem('respiro_modo_atual', modoInicial);
-          localStorage.setItem('respiro_mind_state', modoMapeado);
+          localStorage.setItem('respiro_modo_atual', modo);
+          localStorage.setItem('respiro_mind_state', modoNormalizado);
           localStorage.setItem('respiro_onboarding_concluido', 'true');
         } catch(e){}
 
-        // Aplica o modo e escolhe uma micrometa compatível imediatamente
-        setMindState(modoMapeado, true);
+        // Aplica o estado visual sem sortear tarefa aleatória
+        setMindState(modoNormalizado, false);
+
+        // Carrega a primeira tarefa com atrito calibrado
+        carregarPrimeiraTarefa(modoNormalizado);
 
         triggerSoftHaptic([20, 35, 20]);
         playGentleBell();
 
-        // Fade out suave da tela de boas-vindas
+        // Fade out suave do modal
         const modal = document.getElementById('modal-boas-vindas');
         if (modal) {
-          modal.classList.add('opacity-0');
+          modal.classList.add('opacity-0', 'transition-opacity', 'duration-300');
           setTimeout(() => {
             modal.classList.add('hidden');
             modal.classList.remove('opacity-0');
-          }, 500);
+          }, 350);
         }
       }
 
+      function concluirBoasVindas(modoInicial = 'sem_energia') {
+        selecionarModoBoasVindas(modoInicial);
+      }
+
+      // ==========================================
+      // RELATÓRIO / RESUMO PARA SESSÃO TERAPÊUTICA
+      // ==========================================
+      function abrirModalRelatorio() {
+        const modal = document.getElementById('modal-relatorio');
+        if (!modal) return;
+
+        // 1. Predomínio de Estado
+        const elPredominio = document.getElementById('relatorio-predominio');
+        const countStorm = state.history.filter(h => h.mindState === 'tempestade' || (h.task && h.task.categoria === 'fisiologico_sos')).length;
+        const countNevoa = state.history.length - countStorm;
+        let predominioTexto = 'Modo Névoa (Conservação / Baixa Energia)';
+        if (state.mindState === 'tempestade' || countStorm > countNevoa) {
+          predominioTexto = 'Modo Tempestade (Desaceleração de Ansiedade)';
+        } else if (state.history.length === 0) {
+          predominioTexto = (state.mindState === 'tempestade')
+            ? 'Modo Tempestade (Desaceleração de Ansiedade)'
+            : 'Modo Névoa (Conservação / Baixa Energia)';
+        }
+        if (elPredominio) elPredominio.textContent = predominioTexto;
+
+        // 2. Micromovimentos Feitos
+        const elTotal = document.getElementById('relatorio-total');
+        const count = state.history.length;
+        const totalTexto = `${count} ${count === 1 ? 'passo firme' : 'passos firmes'} no caminho`;
+        if (elTotal) elTotal.textContent = totalTexto;
+
+        // 3. Âncoras mais eficientes
+        const elAncoras = document.getElementById('relatorio-ancoras');
+        const highRelief = state.history.filter(h => (h.delta || 0) >= 1);
+        let ancorasTexto = 'Ações sensoriais e térmicas proporcionaram maior transição para o estado Neutro.';
+        if (highRelief.length > 0) {
+          const names = highRelief.slice(-2).map(h => `"${h.task.titulo}"`).join(' e ');
+          ancorasTexto = `Ações que mais geraram alívio recente: ${names}.`;
+        }
+        if (elAncoras) elAncoras.textContent = ancorasTexto;
+
+        modal.classList.remove('hidden');
+        triggerSoftHaptic(15);
+      }
+
+      function fecharModalRelatorio() {
+        const modal = document.getElementById('modal-relatorio');
+        if (modal) modal.classList.add('hidden');
+        triggerSoftHaptic(10);
+      }
+
+      function copiarRelatorioTexto() {
+        const elPredominio = document.getElementById('relatorio-predominio');
+        const elTotal = document.getElementById('relatorio-total');
+        const elAncoras = document.getElementById('relatorio-ancoras');
+
+        const predominio = elPredominio ? elPredominio.textContent : 'Conservação (Sem Energia)';
+        const total = elTotal ? elTotal.textContent : 'Passos registrados';
+        const ancoras = elAncoras ? elAncoras.textContent : 'Estímulos sensoriais e quebra de atrito';
+
+        const texto = `Respiro • Resumo para Sessão:\n- Predomínio: ${predominio}\n- Micromovimentos registrados: ${total}\n- Âncoras ativadas: ${ancoras}\n*Dados mantidos exclusivamente sob posse do paciente.*`;
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(texto).then(() => {
+            const feedback = document.getElementById('msg-copiado');
+            if (feedback) {
+              feedback.classList.remove('hidden');
+              setTimeout(() => feedback.classList.add('hidden'), 2500);
+            }
+            triggerSoftHaptic([15, 25]);
+          }).catch(() => fallbackCopyText(texto));
+        } else {
+          fallbackCopyText(texto);
+        }
+      }
+
+      function fallbackCopyText(texto) {
+        const ta = document.createElement('textarea');
+        ta.value = texto;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          const feedback = document.getElementById('msg-copiado');
+          if (feedback) {
+            feedback.classList.remove('hidden');
+            setTimeout(() => feedback.classList.add('hidden'), 2500);
+          }
+          triggerSoftHaptic([15, 25]);
+        } catch(e){}
+        document.body.removeChild(ta);
+      }
+
       // Expõe para escopo global (eventos inline onclick)
-      window.concluirBoasVindas = concluirBoasVindas;
+      window.selecionarModoBoasVindas = selecionarModoBoasVindas;
+      window.concluirBoasVindas = selecionarModoBoasVindas;
+      window.carregarPrimeiraTarefa = carregarPrimeiraTarefa;
+      window.abrirModalRelatorio = abrirModalRelatorio;
+      window.fecharModalRelatorio = fecharModalRelatorio;
+      window.copiarRelatorioTexto = copiarRelatorioTexto;
       window.avancarParaCalibragem = avancarParaCalibragem;
       window.voltarParaAcolhimento = voltarParaAcolhimento;
       window.abrirOnboarding = abrirOnboarding;
@@ -4442,7 +4681,8 @@
         }
 
         document.getElementById('btnOpenTherapyReport').addEventListener('click', () => {
-          generateTherapyReport();
+          document.getElementById('moreDrawer').classList.add('hidden');
+          abrirModalRelatorio();
         });
 
         // Botões do Manifesto / Onboarding
