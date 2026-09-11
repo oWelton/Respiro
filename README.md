@@ -130,6 +130,22 @@ Zero dependência de arquivos de áudio externos ou conexão de rede:
 
 ---
 
+## 🧠 Fundamentação Científica & Psicológica
+
+O **Respiro** foi concebido a partir da interseção entre psicologia clínica, neurociência do estresse e design de interação:
+
+- **Ativação Comportamental (Behavioral Activation Therapy - BAT):**
+  - O isolamento e a estagnação física reforçam episódios depressivos ao privar o cérebro de reforçadores naturais de dopamina.
+  - O app introduz micromovimentos atômicos de atrito ultrabaixo que rompem o ciclo da anedonia sem exigir força de vontade sobre-humana.
+- **Teoria Polivagal (Dr. Stephen Porges):**
+  - Nos momentos de crise ansiosa, o sistema nervoso simpático entra em hiperativação (*luta ou fuga*).
+  - O Respiro aciona a ancoragem parassimpática (ramo vagal ventral) através da **desaceleração respiratória fluida** (sem números estressantes) e do **Soundscape estocástico** (frequências de ruído marrom que modulam o ritmo neurovegetativo).
+- **Neuroergonomia & Psicologia da Percepção:**
+  - Pessoas em esgotamento cognitivo sofrem com fadiga ocular e hipersensibilidade a estímulos.
+  - A interface elimina completamente notificações push, cores de alerta saturadas (vermelho/amarelo) e contadores regressivos, empregando luz zenital mineral (`#a1a1aa` e verde sálvia) para diminuir a carga sensorial.
+
+---
+
 ## 🛠️ Arquitetura Técnica
 
 ```mermaid
@@ -139,7 +155,7 @@ graph LR
         Canvas[Terrário Procedural<br/>Canvas 2D API 60FPS]
         Audio[Soundscape Nativo<br/>Web Audio API Nodes]
         Crypto[Segurança Local<br/>Web Crypto AES-GCM 256]
-        PWA[Service Worker<br/>Offline Cache v15]
+        PWA[Service Worker<br/>Offline Cache v16]
         Storage[(IndexedDB / LocalStorage)]
     end
 
@@ -154,8 +170,6 @@ graph LR
 - **PWA Ready:** Manifest configurado, ícone vetorial adaptativo e Service Worker com estratégia *Cache-First* garantindo execução completa sem internet.
 - **Dependências Externas:** Zero frameworks pesados (sem React, Vue ou Angular). Carregamento instantâneo de ~0.3s.
 
-
-
 ---
 
 ## 📲 Como Instalar e Usar no Celular (PWA)
@@ -165,6 +179,25 @@ graph LR
    - **No Android (Chrome):** Toque no menu de três pontos $\rightarrow$ **"Instalar aplicativo"** ou **"Adicionar à tela inicial"**.
    - **No iPhone (Safari):** Toque no botão de **Compartilhar** (ícone com seta para cima) $\rightarrow$ **"Adicionar à Tela de Início"**.
 3. O ícone do **Respiro** aparecerá na sua tela inicial e passará a funcionar **100% offline**, com carregamento imediato e suporte a gestos nativos.
+
+---
+
+## 👨‍💻 Autor & Criação
+
+<div align="center">
+
+Desenvolvido com carinho, estudo e propósito por **Welton Moreira**.
+
+<br/>
+
+[![GitHub](https://img.shields.io/badge/GitHub-owelton-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/owelton)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Conectar-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/welton-moreira/)
+
+<br/>
+
+*“Construindo tecnologia mais humana, acolhedora e que respeita o tempo de cada pessoa.”*
+
+</div>
 
 ---
 
